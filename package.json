@@ -2,7 +2,9 @@
   "name": "legacy-testing",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "application": "node src/quotebot/application.js",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "mocha test"

@@ -1,15 +1,16 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
-describe('Unit - index.js',()=>{
-    context('when we start',()=>{
-        it('should fail',()=>{
-            // given
+describe("unit test", () => {
+  context("when we start", () => {
+    it("should fail", () => {
+      // given
+      const expected = true;
 
-            // when
-            const actual = false;
+      // when
+      const actual = false;
 
-            // then
-            expect(actual).to.be.true;
-        })
-    })
-})
+      // then
+      expect(actual).to.equal(expected);
+    });
+  });
+});

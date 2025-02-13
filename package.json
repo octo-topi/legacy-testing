@@ -1,0 +1,16 @@
+{
+  "name": "legacy-testing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write .",
+    "test": "mocha test"
+  },
+  "description": "",
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "mocha": "^11.1.0",
+    "prettier": "^3.5.1"
+  }
+}

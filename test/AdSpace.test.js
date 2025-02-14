@@ -7,46 +7,40 @@ describe("Unit test - AdSpace", () => {
     context("when the cache has no 'blogs list' key", () => {
       it("should get a list of blogs from the database", function () {
         // given
-        if (AdSpace.cache) {
-          expect(AdSpace.cache.has("blogs list")).to.be.false;
-        }
+        const cache = new Map();
         const databaseRepository = new DatabaseRepositoryDouble({
           blogs: ["A", "B"],
         });
 
         // when
-        AdSpace.getAdSpaces({ databaseRepository });
+        AdSpace.getAdSpaces({ databaseRepository, cache });
 
         // then
         expect(databaseRepository.hasBeenCalledOnce()).to.be.true;
       });
       it("should store them in the cache", function () {
         // given
-        if (AdSpace.cache) {
-          AdSpace.cache.delete("blogs list");
-        }
-        expect(AdSpace.cache.has("blogs list")).to.be.false;
+        const cache = new Map();
         const databaseRepository = new DatabaseRepositoryDouble({
           blogs: ["A", "B"],
         });
 
         // when
-        AdSpace.getAdSpaces({ databaseRepository });
+        AdSpace.getAdSpaces({ databaseRepository, cache });
 
         // then
-        const blogs = AdSpace.cache.get("blogs list");
+        const blogs = cache.get("blogs list");
         expect(blogs).to.deep.equal(["A", "B"]);
       });
       it("should return the list of blogs", function () {
         // given
-        AdSpace.cache.delete("blogs list");
-        expect(AdSpace.cache.has("blogs list")).to.be.false;
+        const cache = new Map();
         const databaseRepository = new DatabaseRepositoryDouble({
           blogs: ["A", "B"],
         });
 
         // when
-        const actual = AdSpace.getAdSpaces({ databaseRepository });
+        const actual = AdSpace.getAdSpaces({ databaseRepository, cache });
 
         // then
         expect(actual).to.deep.equal(["A", "B"]);
@@ -57,14 +51,11 @@ describe("Unit test - AdSpace", () => {
       it("should not call the database", function () {
         // given
         const databaseRepository = new DatabaseRepositoryDouble({ blogs: [] });
-        AdSpace.getAdSpaces({
-          databaseRepository,
-        });
-        databaseRepository.resetCalls();
-        AdSpace.cache.set("blogs list", ["A"]);
+        const cache = new Map();
+        cache.set("blogs list", []);
 
         // when
-        AdSpace.getAdSpaces({ databaseRepository });
+        AdSpace.getAdSpaces({ databaseRepository, cache });
 
         // then
         expect(databaseRepository.hasBeenCalledOnce()).to.be.false;
@@ -74,14 +65,13 @@ describe("Unit test - AdSpace", () => {
         const databaseRepository = {
           listAllBlogs: () => {},
         };
-        AdSpace.getAdSpaces({
-          databaseRepository,
-        });
-        AdSpace.cache.set("blogs list", ["A", "B"]);
+        const cache = new Map();
+        cache.set("blogs list", ["A", "B"]);
 
         // when
         const blogs = AdSpace.getAdSpaces({
           databaseRepository: new DatabaseRepositoryDouble([]),
+          cache,
         });
 
         // then

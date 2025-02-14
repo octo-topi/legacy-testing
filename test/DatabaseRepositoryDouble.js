@@ -12,6 +12,10 @@ class DatabaseRepositoryDouble {
   hasBeenCalledOnce() {
     return this.callCount === 1;
   }
+
+  resetCalls() {
+    this.callCount = 0;
+  }
 }
 
 export { DatabaseRepositoryDouble };

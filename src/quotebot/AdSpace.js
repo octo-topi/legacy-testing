@@ -3,12 +3,12 @@ import { TechBlogs } from "./TechBlogs.js";
 class AdSpace {
   static cache = new Map();
 
-  constructor({ databaseRepository = TechBlogs }) {
+  constructor({ databaseRepository }) {
     this.databaseRepository = databaseRepository;
   }
 
-  static getAdSpaces({}) {
-    return new AdSpace({}).getAdSpacesNonStatic();
+  static getAdSpaces({ databaseRepository = TechBlogs }) {
+    return new AdSpace({ databaseRepository }).getAdSpacesNonStatic();
   }
 
   getAdSpacesNonStatic() {

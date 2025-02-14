@@ -2,10 +2,9 @@ import { expect } from "chai";
 import { AdSpace } from "../src/quotebot/AdSpace.js";
 import { DatabaseRepositoryDouble } from "./DatabaseRepositoryDouble.js";
 
-// unit test should be fast, so these test are not unit tests
-describe("Integration test - AdSpace", () => {
+describe("Unit test - AdSpace", () => {
   context("#getAdSpaces", () => {
-    context("#when the cache has no 'blogs list' key", () => {
+    context("when the cache has no 'blogs list' key", () => {
       it("should get a list of blogs from the database", function () {
         // given
         expect(AdSpace.cache.has("blogs list")).to.be.false;
@@ -50,18 +49,10 @@ describe("Integration test - AdSpace", () => {
       });
     });
 
-    context("#when the cache has a 'blogs list' key", () => {
+    context("when the cache has a 'blogs list' key", () => {
       it("should not call the database", function () {
         // given
-        AdSpace.cache.set("blogs list", [
-          "HackerNews",
-          "Reddit",
-          "TechCrunch",
-          "BuzzFeed",
-          "TMZ",
-          "TheHuffPost",
-          "GigaOM",
-        ]);
+        AdSpace.cache.set("blogs list", ["A", "B"]);
         const databaseRepository = new DatabaseRepositoryDouble({
           blogs: ["A", "B"],
         });
@@ -74,15 +65,7 @@ describe("Integration test - AdSpace", () => {
       });
       it("should return the list", function () {
         // given
-        AdSpace.cache.set("blogs list", [
-          "HackerNews",
-          "Reddit",
-          "TechCrunch",
-          "BuzzFeed",
-          "TMZ",
-          "TheHuffPost",
-          "GigaOM",
-        ]);
+        AdSpace.cache.set("blogs list", ["A", "B"]);
 
         // when
         const blogs = AdSpace.getAdSpaces({
@@ -90,15 +73,7 @@ describe("Integration test - AdSpace", () => {
         });
 
         // then
-        expect(blogs).to.deep.equal([
-          "HackerNews",
-          "Reddit",
-          "TechCrunch",
-          "BuzzFeed",
-          "TMZ",
-          "TheHuffPost",
-          "GigaOM",
-        ]);
+        expect(blogs).to.deep.equal(["A", "B"]);
       });
     });
   });

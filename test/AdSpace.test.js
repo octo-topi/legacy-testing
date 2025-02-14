@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { AdSpace } from "../src/quotebot/AdSpace.js";
+import { DatabaseRepositoryDouble } from "./DatabaseRepositoryDouble.js";
 
 // unit test should be fast, so these test are not unit tests
 describe("Integration test - AdSpace", () => {
@@ -11,19 +12,15 @@ describe("Integration test - AdSpace", () => {
       it("should get a list of blogs from the database", function () {
         // given
         expect(AdSpace.cache.has("blogs list")).to.be.false;
+        const databaseRepository = new DatabaseRepositoryDouble({
+          blogs: ["A", "B"],
+        });
 
         // when
-        // as default test timeout is 2 seconds, and database last 5 seconds
-        // we should remove the test timeout for test to be executed
-        this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
-        const start = Date.now();
-        AdSpace.getAdSpaces({});
-        const elapsed = Date.now() - start;
+        AdSpace.getAdSpaces({ databaseRepository });
 
         // then
-
-        // assert indirectly that database has been called
-        expect(elapsed).to.be.greaterThan(TIME_ELAPSED_IN_DATABASE);
+        expect(databaseRepository.hasBeenCalledOnce()).to.be.true;
       });
 
       it("should store them in the cache", function () {

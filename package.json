@@ -7,10 +7,12 @@
     "application": "node src/quotebot/application.js",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "test": "mocha test"
+    "test": "mocha test",
+    "test:assertion-coverage": "stryker run"
   },
   "description": "",
   "devDependencies": {
+    "@stryker-mutator/mocha-runner": "^8.7.1",
     "chai": "^5.1.2",
     "mocha": "^11.1.0",
     "prettier": "^3.5.1"

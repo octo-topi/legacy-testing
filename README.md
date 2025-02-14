@@ -35,3 +35,9 @@ Assertion coverage (Mutation testing using Stryker)
 ```shell
 npm run assertion-coverage
 ```
+
+Run tests on all commits of a pull request; to make sure all tests pass.
+
+```shell
+git rebase --exec "npm run test" main
+```

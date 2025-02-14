@@ -1,10 +1,13 @@
 import { TechBlogs } from "./TechBlogs.js";
 
 class AdSpace {
-  static cache = new Map();
+  static cache;
 
   constructor({ databaseRepository }) {
     this.databaseRepository = databaseRepository;
+    if (!AdSpace.cache) {
+      AdSpace.cache = new Map();
+    }
   }
 
   static getAdSpaces({ databaseRepository = TechBlogs }) {

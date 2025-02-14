@@ -17,7 +17,7 @@ describe("Integration test - AdSpace", () => {
         // we should remove the test timeout for test to be executed
         this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
         const start = Date.now();
-        AdSpace.getAdSpaces();
+        AdSpace.getAdSpaces({});
         const elapsed = Date.now() - start;
 
         // then
@@ -35,7 +35,7 @@ describe("Integration test - AdSpace", () => {
         // as default test timeout is 2 seconds, and database last 5 seconds
         // we should remove the test timeout for test to be executed
         this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
-        AdSpace.getAdSpaces();
+        AdSpace.getAdSpaces({});
 
         // then
         const blogs = AdSpace.cache.get("blogs list");
@@ -58,7 +58,7 @@ describe("Integration test - AdSpace", () => {
         // as default test timeout is 2 seconds, and database last 5 seconds
         // we should remove the test timeout for test to be executed
         this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
-        const blogs = AdSpace.getAdSpaces();
+        const blogs = AdSpace.getAdSpaces({});
 
         // then
         expect(blogs).to.deep.equal([
@@ -89,7 +89,7 @@ describe("Integration test - AdSpace", () => {
 
         // when
         const start = Date.now();
-        AdSpace.getAdSpaces();
+        AdSpace.getAdSpaces({});
         const elapsed = Date.now() - start;
 
         // then
@@ -108,7 +108,7 @@ describe("Integration test - AdSpace", () => {
         ]);
 
         // when
-        const blogs = AdSpace.getAdSpaces();
+        const blogs = AdSpace.getAdSpaces({});
 
         // then
         expect(blogs).to.deep.equal([

@@ -7,7 +7,7 @@ class AdSpace {
     this.databaseRepository = databaseRepository;
   }
 
-  static getAdSpaces() {
+  static getAdSpaces({}) {
     return new AdSpace({}).getAdSpacesNonStatic();
   }
 

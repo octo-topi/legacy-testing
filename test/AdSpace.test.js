@@ -5,9 +5,6 @@ import { DatabaseRepositoryDouble } from "./DatabaseRepositoryDouble.js";
 // unit test should be fast, so these test are not unit tests
 describe("Integration test - AdSpace", () => {
   context("#getAdSpaces", () => {
-    const FIVE_SECONDS = 5 * 1000;
-    const ONE_SECOND = 1000;
-    const TIME_ELAPSED_IN_DATABASE = FIVE_SECONDS;
     context("#when the cache has no 'blogs list' key", () => {
       it("should get a list of blogs from the database", function () {
         // given
@@ -22,58 +19,40 @@ describe("Integration test - AdSpace", () => {
         // then
         expect(databaseRepository.hasBeenCalledOnce()).to.be.true;
       });
-
       it("should store them in the cache", function () {
         // given
         AdSpace.cache.delete("blogs list");
         expect(AdSpace.cache.has("blogs list")).to.be.false;
+        const databaseRepository = new DatabaseRepositoryDouble({
+          blogs: ["A", "B"],
+        });
 
         // when
-        // as default test timeout is 2 seconds, and database last 5 seconds
-        // we should remove the test timeout for test to be executed
-        this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
-        AdSpace.getAdSpaces({});
+        AdSpace.getAdSpaces({ databaseRepository });
 
         // then
         const blogs = AdSpace.cache.get("blogs list");
-        expect(blogs).to.deep.equal([
-          "HackerNews",
-          "Reddit",
-          "TechCrunch",
-          "BuzzFeed",
-          "TMZ",
-          "TheHuffPost",
-          "GigaOM",
-        ]);
+        expect(blogs).to.deep.equal(["A", "B"]);
       });
       it("should return the list of blogs", function () {
         // given
         AdSpace.cache.delete("blogs list");
         expect(AdSpace.cache.has("blogs list")).to.be.false;
+        const databaseRepository = new DatabaseRepositoryDouble({
+          blogs: ["A", "B"],
+        });
 
         // when
-        // as default test timeout is 2 seconds, and database last 5 seconds
-        // we should remove the test timeout for test to be executed
-        this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
-        const blogs = AdSpace.getAdSpaces({});
+        const actual = AdSpace.getAdSpaces({ databaseRepository });
 
         // then
-        expect(blogs).to.deep.equal([
-          "HackerNews",
-          "Reddit",
-          "TechCrunch",
-          "BuzzFeed",
-          "TMZ",
-          "TheHuffPost",
-          "GigaOM",
-        ]);
+        expect(actual).to.deep.equal(["A", "B"]);
       });
     });
 
     context("#when the cache has a 'blogs list' key", () => {
       it("should not call the database", function () {
         // given
-        this.timeout(TIME_ELAPSED_IN_DATABASE + ONE_SECOND);
         AdSpace.cache.set("blogs list", [
           "HackerNews",
           "Reddit",
@@ -83,14 +62,15 @@ describe("Integration test - AdSpace", () => {
           "TheHuffPost",
           "GigaOM",
         ]);
+        const databaseRepository = new DatabaseRepositoryDouble({
+          blogs: ["A", "B"],
+        });
 
         // when
-        const start = Date.now();
-        AdSpace.getAdSpaces({});
-        const elapsed = Date.now() - start;
+        AdSpace.getAdSpaces({ databaseRepository });
 
         // then
-        expect(elapsed).to.be.lessThan(TIME_ELAPSED_IN_DATABASE);
+        expect(databaseRepository.hasBeenCalledOnce()).to.be.false;
       });
       it("should return the list", function () {
         // given
@@ -105,7 +85,9 @@ describe("Integration test - AdSpace", () => {
         ]);
 
         // when
-        const blogs = AdSpace.getAdSpaces({});
+        const blogs = AdSpace.getAdSpaces({
+          databaseRepository: new DatabaseRepositoryDouble([]),
+        });
 
         // then
         expect(blogs).to.deep.equal([

@@ -4,6 +4,10 @@ class AdSpace {
   static cache = new Map();
 
   static getAdSpaces() {
+    return new AdSpace().getAdSpacesNonStatic();
+  }
+
+  getAdSpacesNonStatic() {
     if (AdSpace.cache.has("blogs list")) {
       return AdSpace.cache.get("blogs list");
     }
